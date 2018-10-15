@@ -3,12 +3,58 @@
 #include <string.h>	
 #include <iostream>
 
-using namespace std;
-
 typedef struct{
-    int valor;
-    bool presenca;
-} g_i;
+    int valor = 0;
+    bool presenca = false;
+} value_v_p;
+
+void mochila(int n, int M, int * arr_peso, int * arr_custo){
+    value_v_p g_[M+1][n+1];
+    
+    for(int j = n-1; j >= 0; j--)
+        for(int i = 1; i <= M; i++){
+            int valor_esq = g_[i][j+1].valor;
+            int valor_dir = 0;
+
+            if (arr_peso[j] <= i) 
+                valor_dir = g_[(i - arr_peso[j])][i].valor + arr_custo[j];
+
+            if(valor_esq > valor_dir || valor_dir == 0){
+                g_[i][j].valor = valor_esq;
+                g_[i][j].presenca = false;
+            } 
+            if(valor_dir > valor_esq) {
+                g_[i][j].valor = valor_dir;
+                g_[i][j].presenca = true;
+            }         
+        }
+    
+    /* PRINTING --
+    */
+    for(int i = 0; i <= M; i++){
+        for(int j = 0; j <= n; j++)
+            printf("%d - %d\t",g_[i][j].valor, g_[i][j].presenca);
+        printf("\n");
+    }
+
+    printf("\n");
+    int peso_total = 0, valor_total = 0, count = 0, lin = M, col = 0;
+    while(count < n ) {
+        printf("g_[lin:%d][col:%d ]: %d \n", lin, col, g_[lin][col].presenca);
+
+        if(g_[lin][col].presenca == 1){
+            lin -= arr_peso[count];
+            peso_total += arr_peso[count];
+            valor_total += arr_custo[count];
+        }
+
+        col++;
+        count++;
+    }
+    printf("\n - Peso Total de itens dentro da mochila:  %d kg", peso_total);
+    printf("\n - Valor Total de itens dentro da mochila: %d R$\n\n", valor_total);
+
+}
 
 char dir[] = "../instancias_mochila/";
 void name_file(char * file){
@@ -27,16 +73,19 @@ void readInstances(){
     
     int n = atoi(strtok (line, " "));
     int M = atoi(strtok (NULL, " "));
-    int arr_pesos[n], arr_valor[n], j = 0;
+    int arr_peso[n], arr_custo[n], k = 0;
 
     while ((read = getline(&line, &len, stream)) != -1) {
-        arr_pesos[j] = atoi(strtok (line, " "));
-        arr_valor[j]   = atoi(strtok (NULL, " "));
-        j++;
-    }    
+        arr_peso[k]  = atoi(strtok (line, " "));
+        arr_custo[k] = atoi(strtok (NULL, " "));
+        k++;
+    }
 
     free(line);
     fclose(stream);
+
+    mochila(n, M, arr_peso, arr_custo);
+
 }
 
 void file_process(char * file){
