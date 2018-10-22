@@ -42,15 +42,6 @@ int main(int argc, char *argv[]) {
     srand(1);
 
     linha();
-    /*int *solucao_aleatoria = malloc((m.numero_elementos + 1) * sizeof(int));
-    for(int i = 0; i < 10; i++) {
-        construir_caminho_aleatorio(m, solucao_aleatoria);
-        int custo_solucao_aleatoria = calcular_custo(m, solucao_aleatoria);
-        printf("Solucao aleatória: ");
-        imprimir_caminho(m.numero_elementos + 1, solucao_aleatoria);
-        printf("Custo solução aleatória: %d\n", custo_solucao_aleatoria);
-    }
-    */
 }
 //-----------------------------------------------------------------------------
 
@@ -114,45 +105,6 @@ void construir_caminho(struct matriz m, int* caminho) {
     caminho[m.numero_elementos] = 0;
 
     free(inseridos);
-}
-
-
-
-//-----------------------------------------------------------------------------
-
-void construir_caminho_aleatorio(struct matriz m, int* caminho) {
-    int *inseridos = malloc(m.numero_elementos * sizeof(int));
-    struct nodo *vizinhos = malloc(m.numero_elementos * sizeof(struct nodo));
-
-    for(int i = 0; i < m.numero_elementos; i++) {
-        inseridos[i] = FALSE;
-    }
-
-    caminho[0] = 0;
-    inseridos[0] = TRUE;
-
-    for(int i = 0; i < m.numero_elementos; i++) {
-        int iv = 0;
-
-        for(int j = 0; j < m.numero_elementos; j++) {
-            if(!inseridos[j]) {
-                vizinhos[iv].indice = j;
-                vizinhos[iv].valor = m.elementos[i][j];
-                iv++;
-            }
-        }
-
-        if(iv == 0) {
-            caminho[i + 1] = 0;
-        } else {
-            int vizinho_selecionado = rand() % iv;
-            caminho[i + 1] = vizinhos[vizinho_selecionado].indice;
-            inseridos[vizinhos[vizinho_selecionado].indice] = TRUE;
-        }
-    }
-
-    free(inseridos);
-    free(vizinhos);
 }
 
 //-----------------------------------------------------------------------------
