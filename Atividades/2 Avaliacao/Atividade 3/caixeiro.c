@@ -10,11 +10,6 @@ struct matriz {
     int** elementos;
 };
 
-struct nodo {
-    int indice;
-    int valor;
-};
-
 void ler_arquivo(struct matriz*, char*);
 int calcular_custo(struct matriz, int*);
 void construir_caminho(struct matriz, int*);
