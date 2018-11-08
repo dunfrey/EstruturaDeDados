@@ -18,7 +18,6 @@ struct nodo {
 void ler_arquivo(struct matriz*, char*);
 int calcular_custo(struct matriz, int*);
 void construir_caminho(struct matriz, int*);
-void construir_caminho_aleatorio(struct matriz, int*);
 
 void imprimir_caminho(int, int*);
 
